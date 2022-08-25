@@ -1,4 +1,4 @@
-﻿namespace FileUpload.Blazor.Menus;
+namespace FileUpload.Blazor.Menus;
 
 public class FileUploadMenus
 {
@@ -7,6 +7,6 @@ public class FileUploadMenus
     public const string HostDashboard = Prefix + ".HostDashboard";
     public const string TenantDashboard = Prefix + ".TenantDashboard";
 
-    //Add your menu items here...
+    public const string Applicants = Prefix + ".Applicants";
 
 }

@@ -16,6 +16,11 @@ public class FileUploadPermissionDefinitionProvider : PermissionDefinitionProvid
 
         //Define your own permissions here. Example:
         //myGroup.AddPermission(FileUploadPermissions.MyPermission1, L("Permission:MyPermission1"));
+
+        var applicantPermission = myGroup.AddPermission(FileUploadPermissions.Applicants.Default, L("Permission:Applicants"));
+        applicantPermission.AddChild(FileUploadPermissions.Applicants.Create, L("Permission:Create"));
+        applicantPermission.AddChild(FileUploadPermissions.Applicants.Edit, L("Permission:Edit"));
+        applicantPermission.AddChild(FileUploadPermissions.Applicants.Delete, L("Permission:Delete"));
     }
 
     private static LocalizableString L(string name)

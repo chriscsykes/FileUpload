@@ -1,0 +1,230 @@
+@page "/applicants"
+@attribute [Authorize(FileUploadPermissions.Applicants.Default)]
+@using FileUpload.Applicants
+@using FileUpload.Localization
+@using FileUpload.Shared
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Microsoft.AspNetCore.Components.Web
+@using Blazorise
+@using Blazorise.Components
+@using Blazorise.DataGrid
+@using Volo.Abp.BlazoriseUI
+@using Volo.Abp.BlazoriseUI.Components
+@using Volo.Abp.ObjectMapping
+@using Volo.Abp.AspNetCore.Components.Messages
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@using FileUpload.Permissions
+@using Microsoft.AspNetCore.Components
+@using Volo.Abp.AspNetCore.Components.Web
+@using Volo.Abp.Http.Client
+@inherits FileUploadComponentBase
+@inject IApplicantsAppService ApplicantsAppService
+@inject IUiMessageService UiMessageService
+@inject IRemoteServiceConfigurationProvider RemoteServiceConfigurationProvider
+@inject NavigationManager NavigationManager
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Applicants"]" BreadcrumbItems="BreadcrumbItems" Toolbar="Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <Form id="ApplicantSearchForm" class="mb-3">
+            <Addons>
+                <Addon AddonType="AddonType.Body">
+                    <TextEdit @bind-Text="@Filter.FilterText"
+                              Autofocus="true"
+                              Placeholder="@L["Search"]">
+                    </TextEdit>
+                </Addon>
+                <Addon AddonType="AddonType.End">
+                    <SubmitButton Form="ApplicantSearchForm" Clicked="GetApplicantsAsync">
+                        <Icon Name="IconName.Search" Class="me-1"></Icon>@L["Search"]
+                    </SubmitButton>
+                </Addon>
+            </Addons>
+        </Form>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<Card>
+    <CardBody>
+        <DataGrid TItem="ApplicantDto"
+                  Data="ApplicantList"
+                  ReadData="OnDataGridReadAsync"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  Responsive="true"
+                  PageSize="PageSize">
+            <DataGridColumns>
+                <DataGridEntityActionsColumn TItem="ApplicantDto" @ref="@EntityActionsColumn">
+                    <DisplayTemplate>
+                        <EntityActions TItem="ApplicantDto" EntityActionsColumn="@EntityActionsColumn">
+                            <EntityAction TItem="ApplicantDto"
+                                          Visible="@CanEditApplicant"
+                                          Clicked="async () => await OpenEditApplicantModalAsync(context)"
+                                          Text="@L["Edit"]"></EntityAction>
+                            <EntityAction TItem="ApplicantDto"
+                                          Visible="@CanDeleteApplicant"
+                                          Clicked="() => DeleteApplicantAsync(context)"
+                                          ConfirmationMessage="@(()=> L["DeleteConfirmationMessage"])"
+                                          Text="@L["Delete"]"></EntityAction>
+                        </EntityActions>
+                    </DisplayTemplate>
+                </DataGridEntityActionsColumn>
+               
+              <DataGridColumn TItem="ApplicantDto"
+                      Field="FirstName"
+                      Caption="@L["FirstName"]">
+              </DataGridColumn>
+
+              <DataGridColumn TItem="ApplicantDto"
+                      Field="LastName"
+                      Caption="@L["LastName"]">
+              </DataGridColumn>
+
+              <DataGridColumn TItem="ApplicantDto"
+                      Field="Email"
+                      Caption="@L["Email"]">
+              </DataGridColumn>
+
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>
+
+@* ************************* CREATE MODAL ************************* *@
+<Modal @ref="CreateApplicantModal" Closing="@CreateApplicantModal.CancelClosingModalWhenFocusLost">
+    <ModalContent Centered="true">
+        <Form id="CreateApplicantForm">
+            <ModalHeader>
+                <ModalTitle>@L["NewApplicant"]</ModalTitle>
+                <CloseButton Clicked="CloseCreateApplicantModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@NewApplicantValidations"
+                            Mode="ValidationMode.Auto"
+                            Model="@NewApplicant"
+                            ValidateOnLoad="false">
+                     
+                    
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["FirstName"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewApplicant.FirstName" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["LastName"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewApplicant.LastName" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Email"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewApplicant.Email" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    
+                    
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseCreateApplicantModalAsync">
+                    @L["Cancel"]
+                </Button>
+                <SubmitButton Form="CreateApplicantForm" Clicked="CreateApplicantAsync" />
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@* ************************* EDIT MODAL ************************* *@
+<Modal @ref="EditApplicantModal" Closing="@EditApplicantModal.CancelClosingModalWhenFocusLost">
+    <ModalContent Centered="true">
+        <Form id="EditApplicantForm">
+            <ModalHeader>
+                <ModalTitle>@L["Update"]</ModalTitle>
+                <CloseButton Clicked="CloseEditApplicantModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@EditingApplicantValidations"
+                            Mode="ValidationMode.Auto"
+                            Model="@EditingApplicant"
+                            ValidateOnLoad="false">
+                     
+                    
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["FirstName"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingApplicant.FirstName" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["LastName"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingApplicant.LastName" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Email"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingApplicant.Email" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    
+                    
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseEditApplicantModalAsync">
+                    @L["Cancel"]
+                </Button>
+                <SubmitButton Form="CreateApplicantForm" Clicked="UpdateApplicantAsync" />
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>

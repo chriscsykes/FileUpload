@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 using FileUpload.Localization;
 using FileUpload.Permissions;
 using Volo.Abp.AuditLogging.Blazor.Menus;
@@ -107,6 +109,14 @@ public class FileUploadMenuContributor : IMenuContributor
         //Administration->Settings
         administration.SetSubItemOrder(SettingManagementMenus.GroupName, 6);
 
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
+                FileUploadMenus.Applicants,
+                l["Menu:Applicants"],
+                url: "/applicants",
+                icon: "fa fa-file-alt",
+                requiredPermissionName: FileUploadPermissions.Applicants.Default)
+        );
         return Task.CompletedTask;
     }
 }

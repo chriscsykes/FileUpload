@@ -1,3 +1,4 @@
+using FileUpload.Applicants;
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
@@ -45,15 +46,17 @@ public class FileUploadEntityFrameworkCoreModule : AbpModule
     {
         context.Services.AddAbpDbContext<FileUploadDbContext>(options =>
         {
-                /* Remove "includeAllEntities: true" to create
-                 * default repositories only for aggregate roots */
+            /* Remove "includeAllEntities: true" to create
+             * default repositories only for aggregate roots */
             options.AddDefaultRepositories(includeAllEntities: true);
+            options.AddRepository<Applicant, Applicants.EfCoreApplicantRepository>();
+
         });
 
         Configure<AbpDbContextOptions>(options =>
         {
-                /* The main point to change your DBMS.
-                 * See also FileUploadDbContextFactory for EF Core tooling. */
+            /* The main point to change your DBMS.
+             * See also FileUploadDbContextFactory for EF Core tooling. */
             options.UseSqlServer();
         });
     }

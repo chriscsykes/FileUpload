@@ -1,3 +1,5 @@
+using FileUpload.Applicants;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -28,6 +30,7 @@ public class FileUploadDbContext :
     IIdentityProDbContext,
     ISaasDbContext
 {
+    public DbSet<Applicant> Applicants { get; set; }
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
 
     #region Entities from the modules
@@ -91,5 +94,17 @@ public class FileUploadDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+        if (builder.IsHostDatabase())
+        {
+            builder.Entity<Applicant>(b =>
+{
+    b.ToTable(FileUploadConsts.DbTablePrefix + "Applicants", FileUploadConsts.DbSchema);
+    b.ConfigureByConvention();
+    b.Property(x => x.FirstName).HasColumnName(nameof(Applicant.FirstName));
+    b.Property(x => x.LastName).HasColumnName(nameof(Applicant.LastName));
+    b.Property(x => x.Email).HasColumnName(nameof(Applicant.Email));
+});
+
+        }
     }
 }

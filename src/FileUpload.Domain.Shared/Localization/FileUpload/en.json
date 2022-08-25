@@ -26,6 +26,26 @@
     "NewsletterInfo": "Get information about the latest happenings.",
     "NewsletterPreference_Default": "Default Newsletter",
     "NewsletterPrivacyAcceptMessage": "I accept the <a href='/privacy-policy'>Privacy Policy</a>.",
-    "ChangeLanguage": "Change language"
+    "ChangeLanguage": "Change language",
+    "Permission:Applicants": "Applicants",
+    "Permission:FileUpload": "File Upload",
+    "Permission:Create": "Create",
+    "Permission:Edit": "Edit",
+    "Permission:Delete": "Delete",
+    "FirstName": "First Name",
+    "LastName": "Last Name",
+    "Email": "Email",
+    "Applicants": "Applicants",
+    "NewApplicant": "New Applicant",
+    "Actions": "Actions",
+    "SuccessfullyDeleted": "Successfully deleted",
+    "DeleteConfirmationMessage": "Are you sure you want to delete this record?",
+    "Search": "Search",
+    "Pick": "Pick",
+    "SeeAdvancedFilters": "Advanced filters",
+    "ItemAlreadyAdded": "This item is already added.",
+    "ExportToExcel": "Export to Excel",
+    "Menu:Applicants": "Applicants",
+    "Menu:FileUpload": "File Upload"
   }
 }
