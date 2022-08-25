@@ -27,19 +27,19 @@ namespace FileUpload.ApplicantFiles
             // Assert
             result.TotalCount.ShouldBe(2);
             result.Items.Count.ShouldBe(2);
-            result.Items.Any(x => x.Id == Guid.Parse("73229655-a50f-43dc-97dd-a68ed41be5a2")).ShouldBe(true);
-            result.Items.Any(x => x.Id == Guid.Parse("f74b859d-d082-47d4-90e4-768a5fef7a55")).ShouldBe(true);
+            result.Items.Any(x => x.Id == Guid.Parse("8dd1cd5e-eb66-4c6a-9763-d6dd028c280c")).ShouldBe(true);
+            result.Items.Any(x => x.Id == Guid.Parse("82949062-5718-4717-afc3-66d08c3cfe21")).ShouldBe(true);
         }
 
         [Fact]
         public async Task GetAsync()
         {
             // Act
-            var result = await _applicantFilesAppService.GetAsync(Guid.Parse("73229655-a50f-43dc-97dd-a68ed41be5a2"));
+            var result = await _applicantFilesAppService.GetAsync(Guid.Parse("8dd1cd5e-eb66-4c6a-9763-d6dd028c280c"));
 
             // Assert
             result.ShouldNotBeNull();
-            result.Id.ShouldBe(Guid.Parse("73229655-a50f-43dc-97dd-a68ed41be5a2"));
+            result.Id.ShouldBe(Guid.Parse("8dd1cd5e-eb66-4c6a-9763-d6dd028c280c"));
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace FileUpload.ApplicantFiles
             // Arrange
             var input = new ApplicantFileCreateDto
             {
-                FileName = "3690b04ec5634d5ba40d849446ac74f986035154b089438593556333eae9fd2e5a984be54c674db683025ec32"
+                FileName = "52920a280b8448279b5b52c6bf360f86ccce83ccbb144c05921b7ad0651e039902810e3b4aa14faf"
             };
 
             // Act
@@ -58,7 +58,7 @@ namespace FileUpload.ApplicantFiles
             var result = await _applicantFileRepository.FindAsync(c => c.Id == serviceResult.Id);
 
             result.ShouldNotBe(null);
-            result.FileName.ShouldBe("3690b04ec5634d5ba40d849446ac74f986035154b089438593556333eae9fd2e5a984be54c674db683025ec32");
+            result.FileName.ShouldBe("52920a280b8448279b5b52c6bf360f86ccce83ccbb144c05921b7ad0651e039902810e3b4aa14faf");
         }
 
         [Fact]
@@ -67,27 +67,27 @@ namespace FileUpload.ApplicantFiles
             // Arrange
             var input = new ApplicantFileUpdateDto()
             {
-                FileName = "a6cd4c17036846dbad55afafee01a4bb5d0da960b8684e45b366057b31212ba5b9aeffbff7944966b1c76edfc09edfc8"
+                FileName = "b2db45e493e"
             };
 
             // Act
-            var serviceResult = await _applicantFilesAppService.UpdateAsync(Guid.Parse("73229655-a50f-43dc-97dd-a68ed41be5a2"), input);
+            var serviceResult = await _applicantFilesAppService.UpdateAsync(Guid.Parse("8dd1cd5e-eb66-4c6a-9763-d6dd028c280c"), input);
 
             // Assert
             var result = await _applicantFileRepository.FindAsync(c => c.Id == serviceResult.Id);
 
             result.ShouldNotBe(null);
-            result.FileName.ShouldBe("a6cd4c17036846dbad55afafee01a4bb5d0da960b8684e45b366057b31212ba5b9aeffbff7944966b1c76edfc09edfc8");
+            result.FileName.ShouldBe("b2db45e493e");
         }
 
         [Fact]
         public async Task DeleteAsync()
         {
             // Act
-            await _applicantFilesAppService.DeleteAsync(Guid.Parse("73229655-a50f-43dc-97dd-a68ed41be5a2"));
+            await _applicantFilesAppService.DeleteAsync(Guid.Parse("8dd1cd5e-eb66-4c6a-9763-d6dd028c280c"));
 
             // Assert
-            var result = await _applicantFileRepository.FindAsync(c => c.Id == Guid.Parse("73229655-a50f-43dc-97dd-a68ed41be5a2"));
+            var result = await _applicantFileRepository.FindAsync(c => c.Id == Guid.Parse("8dd1cd5e-eb66-4c6a-9763-d6dd028c280c"));
 
             result.ShouldBeNull();
         }

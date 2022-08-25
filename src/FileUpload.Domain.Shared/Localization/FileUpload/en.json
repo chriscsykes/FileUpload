@@ -51,6 +51,7 @@
     "FileName": "File Name",
     "ApplicantFiles": "Applicant Files",
     "NewApplicantFile": "New Applicant File",
-    "Menu:ApplicantFiles": "Applicant Files"
+    "Menu:ApplicantFiles": "Applicant Files",
+    "File": "File"
   }
 }

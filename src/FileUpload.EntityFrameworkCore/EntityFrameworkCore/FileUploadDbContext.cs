@@ -110,6 +110,18 @@ public class FileUploadDbContext :
         }
         if (builder.IsHostDatabase())
         {
+
+        }
+        if (builder.IsHostDatabase())
+        {
+
+        }
+        if (builder.IsHostDatabase())
+        {
+
+        }
+        if (builder.IsHostDatabase())
+        {
             builder.Entity<ApplicantFile>(b =>
 {
     b.ToTable(FileUploadConsts.DbTablePrefix + "ApplicantFiles", FileUploadConsts.DbSchema);

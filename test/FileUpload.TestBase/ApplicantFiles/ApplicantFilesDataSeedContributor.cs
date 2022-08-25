@@ -29,14 +29,14 @@ namespace FileUpload.ApplicantFiles
 
             await _applicantFileRepository.InsertAsync(new ApplicantFile
             (
-                id: Guid.Parse("73229655-a50f-43dc-97dd-a68ed41be5a2"),
-                fileName: "51a1531eac274c3ead2165b3fab70e0613ed823581f2495f96012f2ca1bba6736f567724901d4c"
+                id: Guid.Parse("8dd1cd5e-eb66-4c6a-9763-d6dd028c280c"),
+                fileName: "b3af4efcdb1c497095101a83f2256fbd80bbde7745754a759b8a2fb671a2bf07f0bbeddf409446e69a78927d9"
             ));
 
             await _applicantFileRepository.InsertAsync(new ApplicantFile
             (
-                id: Guid.Parse("f74b859d-d082-47d4-90e4-768a5fef7a55"),
-                fileName: "0c008fc90e0b40819c4e4a689f22c5e26f4f3af3fba94ec2add1d210a00b26249d5b1174c55442f8a"
+                id: Guid.Parse("82949062-5718-4717-afc3-66d08c3cfe21"),
+                fileName: "e20ccb9c865b48eaa"
             ));
 
             await _unitOfWorkManager.Current.SaveChangesAsync();

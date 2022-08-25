@@ -15,6 +15,7 @@
 @using Volo.Abp.AspNetCore.Components.Messages
 @using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
 @using FileUpload.Permissions
+@using System.IO
 
 
 
@@ -113,6 +114,11 @@
                         </Field>
                     </Validation>
 
+                    <Field>
+                        <FieldLabel>Upload File:</FieldLabel>
+                        <FileEdit Changed="@OnChanged" Written="@OnWritten" Progressed="@OnProgressed" Ended="@OnEnded" />
+                    </Field>
+                    
 
                     
                     
@@ -154,8 +160,7 @@
                             </TextEdit>
                         </Field>
                     </Validation>
-
-
+                    
                     
                     
                 </Validations>

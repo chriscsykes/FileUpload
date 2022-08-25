@@ -122,6 +122,7 @@ namespace FileUpload.Blazor.Pages
             };
             await NewApplicantFileValidations.ClearAll();
             await CreateApplicantFileModal.Show();
+            Console.WriteLine("---------------- HELLLLLLLLLLLOOOOOOOOOOOOOOO --------------------");
         }
 
         private async Task CloseCreateApplicantFileModalAsync()
@@ -202,6 +203,10 @@ namespace FileUpload.Blazor.Pages
             SelectedEditTab = name;
         }
         
+        /*private async Task OnChanged(FileChangedEventArgs e)
+        {
+
+        }*/
 
     }
 }
