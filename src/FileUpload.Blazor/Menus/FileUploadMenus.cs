@@ -9,4 +9,6 @@ public class FileUploadMenus
 
     public const string Applicants = Prefix + ".Applicants";
 
+    public const string ApplicantFiles = Prefix + ".ApplicantFiles";
+
 }

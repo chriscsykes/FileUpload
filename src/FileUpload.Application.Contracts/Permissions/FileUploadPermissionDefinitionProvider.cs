@@ -21,6 +21,11 @@ public class FileUploadPermissionDefinitionProvider : PermissionDefinitionProvid
         applicantPermission.AddChild(FileUploadPermissions.Applicants.Create, L("Permission:Create"));
         applicantPermission.AddChild(FileUploadPermissions.Applicants.Edit, L("Permission:Edit"));
         applicantPermission.AddChild(FileUploadPermissions.Applicants.Delete, L("Permission:Delete"));
+
+        var applicantFilePermission = myGroup.AddPermission(FileUploadPermissions.ApplicantFiles.Default, L("Permission:ApplicantFiles"));
+        applicantFilePermission.AddChild(FileUploadPermissions.ApplicantFiles.Create, L("Permission:Create"));
+        applicantFilePermission.AddChild(FileUploadPermissions.ApplicantFiles.Edit, L("Permission:Edit"));
+        applicantFilePermission.AddChild(FileUploadPermissions.ApplicantFiles.Delete, L("Permission:Delete"));
     }
 
     private static LocalizableString L(string name)

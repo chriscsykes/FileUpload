@@ -46,6 +46,11 @@
     "ItemAlreadyAdded": "This item is already added.",
     "ExportToExcel": "Export to Excel",
     "Menu:Applicants": "Applicants",
-    "Menu:FileUpload": "File Upload"
+    "Menu:FileUpload": "File Upload",
+    "Permission:ApplicantFiles": "Applicant Files",
+    "FileName": "File Name",
+    "ApplicantFiles": "Applicant Files",
+    "NewApplicantFile": "New Applicant File",
+    "Menu:ApplicantFiles": "Applicant Files"
   }
 }

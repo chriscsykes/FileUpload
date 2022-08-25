@@ -1,3 +1,4 @@
+using FileUpload.ApplicantFiles;
 using System;
 using FileUpload.Shared;
 using Volo.Abp.AutoMapper;
@@ -16,5 +17,7 @@ public class FileUploadApplicationAutoMapperProfile : Profile
 
         CreateMap<Applicant, ApplicantDto>();
         CreateMap<Applicant, ApplicantExcelDto>();
+
+        CreateMap<ApplicantFile, ApplicantFileDto>();
     }
 }

@@ -117,6 +117,15 @@ public class FileUploadMenuContributor : IMenuContributor
                 icon: "fa fa-file-alt",
                 requiredPermissionName: FileUploadPermissions.Applicants.Default)
         );
+
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
+                FileUploadMenus.ApplicantFiles,
+                l["Menu:ApplicantFiles"],
+                url: "/applicant-files",
+                icon: "fa fa-file-alt",
+                requiredPermissionName: FileUploadPermissions.ApplicantFiles.Default)
+        );
         return Task.CompletedTask;
     }
 }

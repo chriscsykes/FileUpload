@@ -1,3 +1,4 @@
+using FileUpload.ApplicantFiles;
 using Volo.Abp.AutoMapper;
 using FileUpload.Applicants;
 using AutoMapper;
@@ -11,5 +12,7 @@ public class FileUploadBlazorAutoMapperProfile : Profile
         //Define your AutoMapper configuration here for the Blazor project.
 
         CreateMap<ApplicantDto, ApplicantUpdateDto>();
+
+        CreateMap<ApplicantFileDto, ApplicantFileUpdateDto>();
     }
 }

@@ -21,4 +21,12 @@ public static class FileUploadPermissions
         public const string Create = Default + ".Create";
         public const string Delete = Default + ".Delete";
     }
+
+    public class ApplicantFiles
+    {
+        public const string Default = GroupName + ".ApplicantFiles";
+        public const string Edit = Default + ".Edit";
+        public const string Create = Default + ".Create";
+        public const string Delete = Default + ".Delete";
+    }
 }

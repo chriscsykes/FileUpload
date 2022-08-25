@@ -1,0 +1,172 @@
+@page "/applicant-files"
+@attribute [Authorize(FileUploadPermissions.ApplicantFiles.Default)]
+@using FileUpload.ApplicantFiles
+@using FileUpload.Localization
+@using FileUpload.Shared
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Microsoft.AspNetCore.Components.Web
+@using Blazorise
+@using Blazorise.Components
+@using Blazorise.DataGrid
+@using Volo.Abp.BlazoriseUI
+@using Volo.Abp.BlazoriseUI.Components
+@using Volo.Abp.ObjectMapping
+@using Volo.Abp.AspNetCore.Components.Messages
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+@using FileUpload.Permissions
+
+
+
+@inherits FileUploadComponentBase
+@inject IApplicantFilesAppService ApplicantFilesAppService
+@inject IUiMessageService UiMessageService
+
+
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["ApplicantFiles"]" BreadcrumbItems="BreadcrumbItems" Toolbar="Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        <Form id="ApplicantFileSearchForm" class="mb-3">
+            <Addons>
+                <Addon AddonType="AddonType.Body">
+                    <TextEdit @bind-Text="@Filter.FilterText"
+                              Autofocus="true"
+                              Placeholder="@L["Search"]">
+                    </TextEdit>
+                </Addon>
+                <Addon AddonType="AddonType.End">
+                    <SubmitButton Form="ApplicantFileSearchForm" Clicked="GetApplicantFilesAsync">
+                        <Icon Name="IconName.Search" Class="me-1"></Icon>@L["Search"]
+                    </SubmitButton>
+                </Addon>
+            </Addons>
+        </Form>
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<Card>
+    <CardBody>
+        <DataGrid TItem="ApplicantFileDto"
+                  Data="ApplicantFileList"
+                  ReadData="OnDataGridReadAsync"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  Responsive="true"
+                  PageSize="PageSize">
+            <DataGridColumns>
+                <DataGridEntityActionsColumn TItem="ApplicantFileDto" @ref="@EntityActionsColumn">
+                    <DisplayTemplate>
+                        <EntityActions TItem="ApplicantFileDto" EntityActionsColumn="@EntityActionsColumn">
+                            <EntityAction TItem="ApplicantFileDto"
+                                          Visible="@CanEditApplicantFile"
+                                          Clicked="async () => await OpenEditApplicantFileModalAsync(context)"
+                                          Text="@L["Edit"]"></EntityAction>
+                            <EntityAction TItem="ApplicantFileDto"
+                                          Visible="@CanDeleteApplicantFile"
+                                          Clicked="() => DeleteApplicantFileAsync(context)"
+                                          ConfirmationMessage="@(()=> L["DeleteConfirmationMessage"])"
+                                          Text="@L["Delete"]"></EntityAction>
+                        </EntityActions>
+                    </DisplayTemplate>
+                </DataGridEntityActionsColumn>
+               
+              <DataGridColumn TItem="ApplicantFileDto"
+                      Field="FileName"
+                      Caption="@L["FileName"]">
+              </DataGridColumn>
+
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>
+
+@* ************************* CREATE MODAL ************************* *@
+<Modal @ref="CreateApplicantFileModal" Closing="@CreateApplicantFileModal.CancelClosingModalWhenFocusLost">
+    <ModalContent Centered="true">
+        <Form id="CreateApplicantFileForm">
+            <ModalHeader>
+                <ModalTitle>@L["NewApplicantFile"]</ModalTitle>
+                <CloseButton Clicked="CloseCreateApplicantFileModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@NewApplicantFileValidations"
+                            Mode="ValidationMode.Auto"
+                            Model="@NewApplicantFile"
+                            ValidateOnLoad="false">
+                     
+                    
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["FileName"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewApplicantFile.FileName" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    
+                    
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseCreateApplicantFileModalAsync">
+                    @L["Cancel"]
+                </Button>
+                <SubmitButton Form="CreateApplicantFileForm" Clicked="CreateApplicantFileAsync" />
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@* ************************* EDIT MODAL ************************* *@
+<Modal @ref="EditApplicantFileModal" Closing="@EditApplicantFileModal.CancelClosingModalWhenFocusLost">
+    <ModalContent Centered="true">
+        <Form id="EditApplicantFileForm">
+            <ModalHeader>
+                <ModalTitle>@L["Update"]</ModalTitle>
+                <CloseButton Clicked="CloseEditApplicantFileModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@EditingApplicantFileValidations"
+                            Mode="ValidationMode.Auto"
+                            Model="@EditingApplicantFile"
+                            ValidateOnLoad="false">
+                     
+                    
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["FileName"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingApplicantFile.FileName" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    
+                    
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseEditApplicantFileModalAsync">
+                    @L["Cancel"]
+                </Button>
+                <SubmitButton Form="CreateApplicantFileForm" Clicked="UpdateApplicantFileAsync" />
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
