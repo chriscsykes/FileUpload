@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@*@page "/"
 @inherits FileUploadComponentBase
 <div class="row entry-row">
     <div class="col-auto">
@@ -40,5 +40,32 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 
+@*from https://community.abp.io/posts/uploaddownload-files-to-azure-storage-with-the-abp-framework-sr7t3w4p*@
+
+@page "/"
+@inherits FileUploadComponentBase
+<div class="container">
+    <CardDeck>
+        <div class="card mt-4 mb-5">
+            <div class="card-body">
+                <div class="col-lg-12">
+                    <div class="p-12">
+                        <h5><i class="fas fa-file-upload text-secondary pr-2 my-2 fa-2x"></i>Upload
+                            File to Azure Storage
+                        </h5>
+                        <p>
+                            <InputFile OnChange="@OnInputFileChange" />
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mt-4 mb-5">
+            <div class="card-body">
+                <CardImage Source="@PictureUrl" Alt="Pizza picture will be displayed here!"></CardImage>
+            </div>
+        </div>
+    </CardDeck>
+</div>
