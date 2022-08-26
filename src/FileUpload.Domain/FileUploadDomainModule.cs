@@ -20,6 +20,11 @@ using Volo.Abp.Commercial.SuiteTemplates;
 using Volo.Abp.Gdpr;
 using Volo.Abp.OpenIddict;
 using Volo.Abp.PermissionManagement.OpenIddict;
+using Volo.Abp.BlobStoring.Azure;
+using Microsoft.Extensions.Configuration;
+using Volo.Abp.BlobStoring;
+using FileUploadStorage;
+using FileUpload.Domain.AzureStorage;
 
 namespace FileUpload;
 
@@ -41,7 +46,8 @@ namespace FileUpload;
     typeof(AbpGdprDomainModule),
     typeof(BlobStoringDatabaseDomainModule)
     )]
-public class FileUploadDomainModule : AbpModule
+[DependsOn(typeof(AbpBlobStoringAzureModule))]
+    public class FileUploadDomainModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
@@ -69,8 +75,47 @@ public class FileUploadDomainModule : AbpModule
             options.Languages.Add(new LanguageInfo("nl", "nl", "Dutch", "nl"));
         });
 
+        // from https://community.abp.io/posts/uploaddownload-files-to-azure-storage-with-the-abp-framework-sr7t3w4p
+        var configuration = context.Services.GetConfiguration(); 
+        ConfigureAzureStorageAccountOptions(context, configuration); 
+        ConfigureAbpBlobStoringOptions(configuration);
+
 #if DEBUG
         context.Services.Replace(ServiceDescriptor.Singleton<IEmailSender, NullEmailSender>());
 #endif
     }
+
+    // from https://community.abp.io/posts/uploaddownload-files-to-azure-storage-with-the-abp-framework-sr7t3w4p
+    private void ConfigureAzureStorageAccountOptions(ServiceConfigurationContext context, IConfiguration configuration)
+    {
+        Configure<AzureStorageAccountOptions>(options =>
+        {
+            var azureStorageConnectionString = configuration["AzureStorageAccountSettings:ConnectionString"];
+            var azureStorageAccountUrl = configuration["AzureStorageAccountSettings:AccountUrl"];
+
+            options.ConnectionString = azureStorageConnectionString;
+            options.AccountUrl = azureStorageAccountUrl;
+        });
+    }
+
+
+
+
+    // from https://community.abp.io/posts/uploaddownload-files-to-azure-storage-with-the-abp-framework-sr7t3w4p
+    private void ConfigureAbpBlobStoringOptions(IConfiguration configuration)
+    {
+        Configure<AbpBlobStoringOptions>(options =>
+        {
+            var azureStorageConnectionString = configuration["AzureStorageAccountSettings:ConnectionString"];
+            options.Containers.Configure<PizzaPictureContainer>(container =>
+            {
+                container.UseAzure(azure =>
+                {
+                    azure.ConnectionString = azureStorageConnectionString;
+                    azure.CreateContainerIfNotExists = true;
+                });
+            });
+        });
+    }
+
 }

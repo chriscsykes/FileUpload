@@ -17,67 +17,67 @@ public abstract class FileUploadComponentBase : AbpComponentBase
         LocalizationResource = typeof(FileUploadResource);
     }
 
-    // WriteToStreamAsync example from https://blazorise.com/docs/components/file
-    string fileContent;
+    //// WriteToStreamAsync example from https://blazorise.com/docs/components/file
+    //string fileContent;
 
-    protected async Task OnChanged(FileChangedEventArgs e)
-    {
-        try
-        {
-            foreach (var file in e.Files)
-            {
-                // A stream is going to be the destination stream we're writing to.
-                using (var stream = new MemoryStream())
-                {
-                    // Here we're telling the FileEdit where to write the upload result
-                    await file.WriteToStreamAsync(stream);
+    //protected async Task OnChanged(FileChangedEventArgs e)
+    //{
+    //    try
+    //    {
+    //        foreach (var file in e.Files)
+    //        {
+    //            // A stream is going to be the destination stream we're writing to.
+    //            using (var stream = new MemoryStream())
+    //            {
+    //                // Here we're telling the FileEdit where to write the upload result
+    //                await file.WriteToStreamAsync(stream);
 
-                    // Once we reach this line it means the file is fully uploaded.
-                    // In this case we're going to offset to the beginning of file
-                    // so we can read it.
-                    stream.Seek(0, SeekOrigin.Begin);
+    //                // Once we reach this line it means the file is fully uploaded.
+    //                // In this case we're going to offset to the beginning of file
+    //                // so we can read it.
+    //                stream.Seek(0, SeekOrigin.Begin);
 
-                    // Use the stream reader to read the content of uploaded file,
-                    // in this case we can assume it is a textual file.
-                    using (var reader = new StreamReader(stream))
-                    {
-                        fileContent = await reader.ReadToEndAsync();
-                    }
-                }
-            }
+    //                // Use the stream reader to read the content of uploaded file,
+    //                // in this case we can assume it is a textual file.
+    //                using (var reader = new StreamReader(stream))
+    //                {
+    //                    fileContent = await reader.ReadToEndAsync();
+    //                }
+    //            }
+    //        }
 
-        }
-        catch (Exception exc)
-        {
-            Console.WriteLine(exc.Message);
-        }
-        finally
-        {
-            this.StateHasChanged();
-        }
-    }
+    //    }
+    //    catch (Exception exc)
+    //    {
+    //        Console.WriteLine(exc.Message);
+    //    }
+    //    finally
+    //    {
+    //        this.StateHasChanged();
+    //    }
+    //}
 
-    protected void OnWritten(FileWrittenEventArgs e)
-    {
-        Console.WriteLine($"File: {e.File.Name} Position: {e.Position} Data: {Convert.ToBase64String(e.Data)}");
-    }
+    //protected void OnWritten(FileWrittenEventArgs e)
+    //{
+    //    Console.WriteLine($"File: {e.File.Name} Position: {e.Position} Data: {Convert.ToBase64String(e.Data)}");
+    //}
 
-    protected Task OnProgressed(FileProgressedEventArgs e)
-    {
-        Console.WriteLine($"File: {e.File.Name} Progress: {e.Percentage}");
-        return Task.CompletedTask;  
+    //protected Task OnProgressed(FileProgressedEventArgs e)
+    //{
+    //    Console.WriteLine($"File: {e.File.Name} Progress: {e.Percentage}");
+    //    return Task.CompletedTask;  
 
-    }
+    //}
 
-    protected void OnEnded(FileEndedEventArgs e)
-    {
-        if (e.Success)
-        {
-            Console.WriteLine($"------------- FINISHED LOADING '{e.File.Name}' -------------------");
+    //protected void OnEnded(FileEndedEventArgs e)
+    //{
+    //    if (e.Success)
+    //    {
+    //        Console.WriteLine($"------------- FINISHED LOADING '{e.File.Name}' -------------------");
 
-        }
+    //    }
 
-    }
+    //}
 
     // // OpenReadStream example from https://blazorise.com/docs/components/file
     //const int OneMb = 1024 * 1024;
