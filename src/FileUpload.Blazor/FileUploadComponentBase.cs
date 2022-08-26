@@ -2,6 +2,7 @@
 using FileUpload.Localization;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.AspNetCore.Components;
 
@@ -9,12 +10,15 @@ namespace FileUpload.Blazor;
 
 public abstract class FileUploadComponentBase : AbpComponentBase
 {
-    string fileContent;
+
 
     protected FileUploadComponentBase()
     {
         LocalizationResource = typeof(FileUploadResource);
     }
+
+    // WriteToStreamAsync example from https://blazorise.com/docs/components/file
+    string fileContent;
 
     protected async Task OnChanged(FileChangedEventArgs e)
     {
@@ -41,6 +45,7 @@ public abstract class FileUploadComponentBase : AbpComponentBase
                     }
                 }
             }
+
         }
         catch (Exception exc)
         {
@@ -57,9 +62,11 @@ public abstract class FileUploadComponentBase : AbpComponentBase
         Console.WriteLine($"File: {e.File.Name} Position: {e.Position} Data: {Convert.ToBase64String(e.Data)}");
     }
 
-    protected void OnProgressed(FileProgressedEventArgs e)
+    protected Task OnProgressed(FileProgressedEventArgs e)
     {
         Console.WriteLine($"File: {e.File.Name} Progress: {e.Percentage}");
+        return Task.CompletedTask;  
+
     }
 
     protected void OnEnded(FileEndedEventArgs e)
@@ -67,8 +74,63 @@ public abstract class FileUploadComponentBase : AbpComponentBase
         if (e.Success)
         {
             Console.WriteLine($"------------- FINISHED LOADING '{e.File.Name}' -------------------");
+
         }
 
     }
 
+    // // OpenReadStream example from https://blazorise.com/docs/components/file
+    //const int OneMb = 1024 * 1024;
+
+    //protected async Task OnChanged(FileChangedEventArgs e)
+    //{
+    //    try
+    //    {
+    //        var file = e.Files.FirstOrDefault();
+    //        if (file == null)
+    //        {
+    //            return;
+    //        }
+
+    //        var buffer = new byte[OneMb];
+    //        using (var bufferedStream = new BufferedStream(file.OpenReadStream(long.MaxValue), OneMb))
+    //        {
+    //            int readCount = 0;
+    //            int readBytes;
+    //            while ((readBytes = await bufferedStream.ReadAsync(buffer, 0, OneMb)) > 0)
+    //            {
+    //                Console.WriteLine($"Read:{readCount++} {readBytes / (double)OneMb} MB");
+    //                // Do work on the first 1MB of data
+    //            }
+    //        }
+    //    }
+    //    catch (Exception exc)
+    //    {
+    //        Console.WriteLine(exc.Message);
+    //    }
+    //    finally
+    //    {
+    //        this.StateHasChanged();
+    //    }
+    //}
+
+    //protected void OnWritten(FileWrittenEventArgs e)
+    //{
+    //    Console.WriteLine($"File: {e.File.Name} Position: {e.Position} Data: {Convert.ToBase64String(e.Data)}");
+    //}
+
+    //protected void OnProgressed(FileProgressedEventArgs e)
+    //{
+    //    Console.WriteLine($"File: {e.File.Name} Progress: {e.Percentage}");
+    //}
+
+    //protected void OnEnded(FileEndedEventArgs e)
+    //{
+    //    if (e.Success)
+    //    {
+    //        Console.WriteLine($"------------- FINISHED LOADING '{e.File.Name}' -------------------");
+
+    //    }
+
+    //}
 }
